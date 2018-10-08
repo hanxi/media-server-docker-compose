@@ -103,15 +103,10 @@ docker-compose stop
 - `MINIDLNA_NETWORK_INTERFACE=eth1` 这个需要根据自己的虚拟机网卡情况来修改，这里有介绍 [#note-for-macos](https://github.com/viranch/docker-minidlna/blob/master/README.md#note-for-macos)
 
 > If you're using docker on MacOS (this usually means having a VirtualBox VM with a docker installation, which is done by the docker MacOS installer), you need to do some extra steps to get this working. DLNA server & clients need to be on same network but the VirtualBox VM has a NATed network adapter. You need to add a new bridged network adapter:
-
 > 1. Stop the VM: `docker-machine stop default`
-
 > 2. Open VirtualBox, select the VM with name "default" and go to its Settings -> Network -> Select an unused Adapter, enable it and select "Bridged Adapter" under "Attached to:" field.
-
 > 3. Start the VM: `docker-machine start default`
-
 > 4. From VirtualBox, again select the "default" VM and click on Show. This will open up the terminal of the VM, use `ifconfig` to figure out the new bridged network adapter, say it is `eth2`.
-
 > 5. Now add `-e NIC=eth2` in the above run command after the `-v` switch.
 
 ### samba
