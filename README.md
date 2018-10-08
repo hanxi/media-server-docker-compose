@@ -109,10 +109,10 @@ docker-compose stop
 > 4. From VirtualBox, again select the "default" VM and click on Show. This will open up the terminal of the VM, use `ifconfig` to figure out the new bridged network adapter, say it is `eth2`.
 > 5. Now add `-e NIC=eth2` in the above run command after the `-v` switch.
 
-- 如果出现媒体文件没有刷新，需要执行 `minidlna -R` 命令
+- 如果出现媒体文件没有刷新，需要执行 `minidlnad -R` 命令
 ```
 $ docker-machine ssh default
-$ docker exec -it minidlna minidlna -R
+$ docker exec -it minidlna minidlnad -R
 ```
 
 ### samba
