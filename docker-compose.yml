@@ -1,0 +1,68 @@
+version: '2'
+
+services:
+  aria2:
+    container_name: aria2
+    image: wahyd4/aria2-ui
+    ports:
+      - "8000:80"
+      - "443:443"
+      - "6800:6800"
+    volumes:
+      - /data:/data:rw
+    environment:
+      - DOMAIN=:80
+      # - SSL=true
+      - RPC_SECRET=HelloWorld
+      - ARIA2_USER=admin
+      - ARIA2_PWD=12345678
+      - ENABLE_AUTH=true
+    restart: always
+  bt-tracker:
+    container_name: bt-tracker
+    image: hanxi/aria2-bt-tracker
+    environment:
+      - ARIA2_URL=http://aria2:6800/jsonrpc
+      - ARIA2_TOKEN=HelloWorld
+      - TRACKER_URL=https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt
+    links:
+      - aria2:aria2
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+    restart: always
+  minidlna:
+    image: vladgh/minidlna
+    container_name: minidlna
+    network_mode: 'host'
+    environment:
+      - MINIDLNA_MEDIA_DIR=/media
+      - MINIDLNA_FRIENDLY_NAME=MiniDLNA
+      - MINIDLNA_INOTIFY=yes
+      - MINIDLNA_NOTIFY_INTERVAL=3
+      - MINIDLNA_NETWORK_INTERFACE=eth1
+    volumes:
+      - /cache/minidlna:/var/lib/minidlna
+      - /data:/media
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+    restart: always
+  samba:
+    container_name: samba
+    image: joebiellik/samba-server
+    network_mode: 'host'
+    volumes:
+      - /data:/mnt
+      - ./smb.conf:/etc/samba/smb.conf
+    environment:
+      - USERNAME=samba
+      - PASSWORD=samba
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+    restart: always
+
